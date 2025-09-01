@@ -60,6 +60,8 @@ def drinks():
 
 def checkout():
     print('money please')
+    #Print out order and cost
+    quit()
 
 
 order()
