@@ -39,13 +39,13 @@ def order(): #Function for ordering a burger
         for index, key in enumerate(menu.keys()): #Prints out keys of menu dictionary (names of sub-menus) - enumerate() allows these to be printed as a numerical list
             print(f"{index+1}. {key}")
         choice = input("Enter 1, 2, or 3 to select a menu to view, or enter 4 to complete your order: ") #Customer selects menu or proceeds to checkout
-        if choice == 1:
+        if choice == '1':
             burgers() #Goes to burger menu
-        elif choice == 2:
+        elif choice == '2':
             sides() #Goes to sides menu
-        elif choice == 3:
+        elif choice == '3':
             drinks() #Goes to drinks menu
-        elif choice == 4:
+        elif choice == '4':
             checkout() #Goes to checkout
         else:
             print("Invalid choice.") #If customer enters a value other than 1, 2, 3 or 4
