@@ -16,10 +16,21 @@ menu = {'Burgers': { #Burger Menu Dictionary
     'Sides': { #Sides Menu Dictionary
         'Small Fries':{ 
         'Price':3.49
+    },
+    'Medium Fries':{ 
+        'Price':4.49
+    },
+    'Large Fries':{ 
+        'Price':5.99
     }},
+    
     'Drinks': { #Drinks Menu Dictionary
         'Small Coke':{'Price': 3.49},
-        'Large Coke':{'Price':4.99}}
+        'Large Coke':{'Price':4.99},
+        'Small Sprite':{'Price': 3.49},
+        'Large Sprite':{'Price':4.99},
+        'Small Fanta':{'Price': 3.49},
+        'Large Fanta':{'Price':4.99},}
 }
 
 #Toppings that a customer can add to their burger
