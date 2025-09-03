@@ -64,8 +64,73 @@ def burgers(): #Burger Menu
     burger_list = list(menu['Burgers'].items()) #Creates list of keys/values in burger menu to print
     for index, (burger, details) in enumerate(burger_list): 
         print(f'{index+1}. {burger}: ${details['Price']}') #Prints numbered list with burger and price
-
-
+    while True:
+        try:
+            choice = int(input("Enter an item's number to view it: "))
+            if 1 <= choice <= len(burger_list): #If number within range of burgers in menu
+                selected_burger, details = burger_list[choice-1] #Accesses burger name and details from list, (choice -1 to get correct index value as list starts from 0)
+                print(f"{selected_burger}:") #Burger Name
+                print(f"  Price: ${details['Price']}") #Burger Price
+                print(f"  Toppings: {', '.join(details['Toppings'])}") #Prints toppings of burger
+                while True:
+                    choice = input('Add burger to order? y for yes, n to return to the menu ')
+                    if choice == 'y':
+                        choice = input('Make any changes to order? 1. Yes, 2. No ')
+                        if choice == '1':
+                            additions = [] #Additions are added to list as selected
+                            removals = [] #Removals are added to list as selected
+                            while True:
+                                choice = input('1. Add an item\n 2. Remove an item\n 3. Continue ')
+                                if choice == '1':
+                                    print('Available items:')
+                                    print(', '.join(burger_toppings)) #Prints toppings that can be added to a burger
+                                    choice = input('Select an item from the list to add to your burger, or press enter to return to the changes menu: ').title()
+                                    if choice in burger_toppings: 
+                                        additions.append(choice) #Adds item to additions list
+                                        print(f"{choice} added to burger") 
+                                elif choice == '2':
+                                    print(f"{selected_burger} toppings:")
+                                    print(', '.join(details['Toppings'])) #Prints toppings on burger
+                                    #Make code only print out current toppings on burger
+                                    choice = print('Select an item to remove from the burger, or press enter to return to the changes menu:')
+                                    choice = input('Select an item from the list to add to your burger, or press enter to return to the changes menu: ').title()
+                                    if choice in details['Toppings']:
+                                        removals.append(choice) #Adds toppings to removals list
+                                        print(f"{choice} removed from burger")
+                                elif choice == '3':
+                                    while True:
+                                        try:
+                                            choice = int(input('How many would you like to order? '))
+                                            if choice > 0:
+                                                print(f"{choice} {selected_burger} added to order") 
+                                                customer_order['Burgers'].update({'Burger': {selected_burger}, 'Quantity':{choice},'Price': {details['Price']}, 'Additions':[additions], 'Removals':[removals]}) #Adds order details to customer_orders dictionary to print out at checkout
+                                                break
+                                            else:
+                                                print("Enter a valid input")
+                                        except ValueError:
+                                            print('Enter a valid input')
+                                    break
+                                else:
+                                    print("Enter a valid input")
+                        else:
+                            while True:
+                                try:
+                                    choice = int(input('How many would you like to order? '))
+                                    if choice > 0:
+                                        print(f"{choice} {selected_burger} added to order")
+                                        customer_order['Burgers'].update({'Burger': {selected_burger}, 'Quantity':{choice},'Price': {details['Price']}, 'Additions':'', 'Removals':''}) #Adds order details to customer_orders dictionary to print out at checkout
+                                        break
+                                    else:
+                                        print("Enter a valid input")
+                                except ValueError:
+                                    print('Enter a valid input')
+                            break
+                    else:
+                         burgers()
+            else: #Users integer input is not within range of number of burgers
+                print("Invalid Choice")
+        except ValueError:  #If user's input is not an integer
+            print("Invalid Choice")
 def sides(): #Sides Menu
     print('sides')
 
