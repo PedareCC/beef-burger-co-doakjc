@@ -37,9 +37,7 @@ menu = {'Burgers': { #Burger Menu Dictionary
 burger_toppings = ['Beef Patty', 'Bacon', 'Cheese', 'Pickles', 'Onion', 'Onion Rings', 'Tomato', 'Lettuce', 'Ketchup', 'Mustard', 'Barbecque Sauce']
 
 #Customer order Dictionary, information gets added to this after an item is ordered, and this is then printed out at the checkout
-customer_order = {'Burgers':{ #Dictionary for Burger Orders
-
-},
+customer_order = {'Burgers':{}, #Dictionary for Burger Orders
                   'Sides':{}, #Dictionary for Sides Orders
                   'Drinks':{}} #Dictionary for Drinks Orders
 
@@ -62,7 +60,10 @@ def order(): #Function for ordering a burger
             print("Invalid choice.") #If customer enters a value other than 1, 2, 3 or 4
 
 def burgers(): #Burger Menu
-    print('burger')
+    print('Burgers Menu:')
+    burger_list = list(menu['Burgers'].items()) #Creates list of keys/values in burger menu to print
+    for index, (burger, details) in enumerate(burger_list): 
+        print(f'{index+1}. {burger}: ${details['Price']}') #Prints numbered list with burger and price
 
 
 def sides(): #Sides Menu
