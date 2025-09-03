@@ -65,8 +65,9 @@ def burgers(): #Burger Menu
     for index, (burger, details) in enumerate(burger_list): 
         print(f'{index+1}. {burger}: ${details['Price']}') #Prints numbered list with burger and price
     while True:
+        choice = (input("Enter an item's number to view it, or type r to return to menu selection or c to proceed to the checkout: "))
         try:
-            choice = int(input("Enter an item's number to view it: "))
+            choice = int(choice)
             if 1 <= choice <= len(burger_list): #If number within range of burgers in menu
                 selected_burger, details = burger_list[choice-1] #Accesses burger name and details from list, (choice -1 to get correct index value as list starts from 0)
                 print(f"{selected_burger}:") #Burger Name
@@ -130,7 +131,14 @@ def burgers(): #Burger Menu
             else: #Users integer input is not within range of number of burgers
                 print("Invalid Choice")
         except ValueError:  #If user's input is not an integer
-            print("Invalid Choice")
+            choice = choice.lower()
+            if choice == 'r': #Return to main menu
+                order()
+            elif choice == 'c':#Proceed to checkout
+                checkout()
+            else:
+                print(choice)
+                print("Invalid Choice") #Any other choice is invalid
 def sides(): #Sides Menu
     print('sides')
 
@@ -138,8 +146,13 @@ def drinks(): #Drinks Menu
     print('drinks')
 
 def checkout(): #Checkout
-    print('money please')
-    #Print out order and cost
+    if customer_order['Burgers'] != '': #Checks if no burgers were ordered
+        print('Burgers')
+        for menu, order in customer_order['Burgers'].items():
+            if menu == 'Price':
+                print(f"Price: ${order}") #Different print to add dollar sign 
+            else:
+                print(menu, order)
     quit() #Ends program
 
 
