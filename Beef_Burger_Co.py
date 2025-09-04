@@ -76,6 +76,7 @@ def burgers(): #Burger Menu
                 while True:
                     choice = input('Add burger to order? y for yes, n to return to the menu ')
                     if choice == 'y':
+                        updated_toppings=list(details['Toppings']) # Allows removals to be removed from burger toppings/additions added
                         choice = input('Make any changes to order? 1. Yes, 2. No ')
                         if choice == '1':
                             additions = [] #Additions are added to list as selected
@@ -88,16 +89,22 @@ def burgers(): #Burger Menu
                                     choice = input('Select an item from the list to add to your burger, or press enter to return to the changes menu: ').title()
                                     if choice in burger_toppings: 
                                         additions.append(choice) #Adds item to additions list
+                                        updated_toppings.append(choice) #Adds item to the list of items on the customers current burger order
                                         print(f"{choice} added to burger") 
                                 elif choice == '2':
                                     print(f"{selected_burger} toppings:")
                                     print(', '.join(details['Toppings'])) #Prints toppings on burger
+                                    if details['Toppings'] != updated_toppings:
+                                        print(f"Current toppings on your {selected_burger}:")
+                                        print(', '.join(updated_toppings)) #Prints toppings on burger
                                     #Make code only print out current toppings on burger
-                                    choice = print('Select an item to remove from the burger, or press enter to return to the changes menu:')
-                                    choice = input('Select an item from the list to add to your burger, or press enter to return to the changes menu: ').title()
-                                    if choice in details['Toppings']:
+                                    choice = input('Select an item to remove from the burger, or press enter to return to the changes menu:').title()
+                                    if choice in updated_toppings:
                                         removals.append(choice) #Adds toppings to removals list
+                                        updated_toppings.remove(choice) #Remove topping from customers current burger order
                                         print(f"{choice} removed from burger")
+                                    elif choice != '':
+                                        print('This item is not on the burger')
                                 elif choice == '3':
                                     while True:
                                         try:
@@ -125,10 +132,11 @@ def burgers(): #Burger Menu
                                         print("Enter a valid input")
                                 except ValueError:
                                     print('Enter a valid input')
-                            break
+                        burgers()
                     else:
                          burgers()
-            else: #Users integer input is not within range of number of burgers
+                    break
+            else: #User's integer input is not within range of number of burgers
                 print("Invalid Choice")
         except ValueError:  #If user's input is not an integer
             choice = choice.lower()
