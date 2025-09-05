@@ -163,13 +163,12 @@ def checkout(): #Checkout
     print(customer_order)
     if len(customer_order['Burgers']) != 0: #Checks if no burgers were ordered
         print('Burgers')
-        i = 0
-        for i, menu, order in customer_order['Burgers'][i].items():
-            if menu == 'Price':
-                print(f"Price: ${order}") #Different print to add dollar sign 
-            else:
-                print(menu, order)
-            i+=1   
+        for burger in customer_order['Burgers']:
+            for menu, order in burger.items():
+                if menu == 'Price':
+                    print(f"Price: ${order}") #Different print to add dollar sign 
+                else:
+                    print(menu, order)
     sys.exit() #Ends program
 
 
