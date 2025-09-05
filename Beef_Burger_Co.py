@@ -114,9 +114,9 @@ def burgers(): #Burger Menu
                                             if choice > 0:
                                                 print(f"{choice} {selected_burger} added to order") 
                                                 if updated_toppings != details['Toppings']:
-                                                    customer_order['Burgers'].append({'Burger': {selected_burger}, 'Quantity':{choice},'Price': {details['Price']}, 'Additions':[additions], 'Removals':[removals], 'Updated Toppings': [updated_toppings]}) #Adds order details to customer_orders dictionary to print out at checkout
+                                                    customer_order['Burgers'].append({'Burger': selected_burger, 'Quantity':choice,'Price': details['Price'], 'Additions':additions, 'Removals':removals, 'Updated Toppings': updated_toppings}) #Adds order details to customer_orders dictionary to print out at checkout
                                                 else:
-                                                    customer_order['Burgers'].append({'Burger': {selected_burger}, 'Quantity':{choice},'Price': {details['Price']}, 'Additions':[additions], 'Removals':[removals]}) #Adds order details to customer_orders dictionary to print out at checkout 
+                                                    customer_order['Burgers'].append({'Burger': selected_burger, 'Quantity':choice,'Price': details['Price'], 'Additions':additions, 'Removals':removals}) #Adds order details to customer_orders dictionary to print out at checkout 
                                                 break
                                                 
                                             else:
@@ -132,7 +132,7 @@ def burgers(): #Burger Menu
                                     choice = int(input('How many would you like to order? '))
                                     if choice > 0:
                                         print(f"{choice} {selected_burger} added to order")
-                                        customer_order['Burgers'].append({'Burger': {selected_burger}, 'Quantity':{choice},'Price': {details['Price']}, 'Additions':'', 'Removals':''}) #Adds order details to customer_orders dictionary to print out at checkout
+                                        customer_order['Burgers'].append({'Burger': selected_burger, 'Quantity':choice,'Price': details['Price'], 'Additions':'', 'Removals':''}) #Adds order details to customer_orders dictionary to print out at checkout
                                         break
                                     else:
                                         print("Enter a valid input")
