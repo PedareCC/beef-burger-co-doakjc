@@ -1,3 +1,5 @@
+import sys #allows for sys.exit() function
+
 #Full Menu Dictionary
 menu = {'Burgers': { #Burger Menu Dictionary
     'Cheeseburger': { #Dictionary for individual item
@@ -37,9 +39,9 @@ menu = {'Burgers': { #Burger Menu Dictionary
 burger_toppings = ['Beef Patty', 'Bacon', 'Cheese', 'Pickles', 'Onion', 'Onion Rings', 'Tomato', 'Lettuce', 'Ketchup', 'Mustard', 'Barbecque Sauce']
 
 #Customer order Dictionary, information gets added to this after an item is ordered, and this is then printed out at the checkout
-customer_order = {'Burgers':{}, #Dictionary for Burger Orders
-                  'Sides':{}, #Dictionary for Sides Orders
-                  'Drinks':{}} #Dictionary for Drinks Orders
+customer_order = {'Burgers':[], #Dictionary for Burger Orders
+                  'Sides':[], #Dictionary for Sides Orders
+                  'Drinks':[]} #Dictionary for Drinks Orders
 
 def order(): #Function for ordering a burger
     print("Welcome to Beef Burger Co!")
@@ -47,14 +49,14 @@ def order(): #Function for ordering a burger
         print("Here's our menu:")
         for index, key in enumerate(menu.keys()): #Prints out keys of menu dictionary (names of sub-menus) - enumerate() allows these to be printed as a numerical list
             print(f"{index+1}. {key}")
-        choice = input("Enter 1, 2, or 3 to select a menu to view, or enter 4 to complete your order: ") #Customer selects menu or proceeds to checkout
-        if choice == '1':
+        menu_option = input("Enter 1, 2, or 3 to select a menu to view, or enter 4 to complete your order: ") #Customer selects menu or proceeds to checkout
+        if menu_option == '1':
             burgers() #Goes to burger menu
-        elif choice == '2':
+        elif menu_option == '2':
             sides() #Goes to sides menu
-        elif choice == '3':
+        elif menu_option == '3':
             drinks() #Goes to drinks menu
-        elif choice == '4':
+        elif menu_option == '4':
             checkout() #Goes to checkout
         else:
             print("Invalid choice.") #If customer enters a value other than 1, 2, 3 or 4
@@ -65,11 +67,11 @@ def burgers(): #Burger Menu
     for index, (burger, details) in enumerate(burger_list): 
         print(f'{index+1}. {burger}: ${details['Price']}') #Prints numbered list with burger and price
     while True:
-        choice = (input("Enter an item's number to view it, or type r to return to menu selection or c to proceed to the checkout: "))
+        selection = (input("Enter an item's number to view it, or type r to return to menu selection or c to proceed to the checkout: "))
         try:
-            choice = int(choice)
-            if 1 <= choice <= len(burger_list): #If number within range of burgers in menu
-                selected_burger, details = burger_list[choice-1] #Accesses burger name and details from list, (choice -1 to get correct index value as list starts from 0)
+            selection = int(selection)
+            if 1 <= selection <= len(burger_list): #If number within range of burgers in menu
+                selected_burger, details = burger_list[selection-1] #Accesses burger name and details from list, (choice -1 to get correct index value as list starts from 0)
                 print(f"{selected_burger}:") #Burger Name
                 print(f"  Price: ${details['Price']}") #Burger Price
                 print(f"  Toppings: {', '.join(details['Toppings'])}") #Prints toppings of burger
@@ -111,8 +113,12 @@ def burgers(): #Burger Menu
                                             choice = int(input('How many would you like to order? '))
                                             if choice > 0:
                                                 print(f"{choice} {selected_burger} added to order") 
-                                                customer_order['Burgers'].update({'Burger': {selected_burger}, 'Quantity':{choice},'Price': {details['Price']}, 'Additions':[additions], 'Removals':[removals]}) #Adds order details to customer_orders dictionary to print out at checkout
+                                                if updated_toppings != details['Toppings']:
+                                                    customer_order['Burgers'].append({'Burger': {selected_burger}, 'Quantity':{choice},'Price': {details['Price']}, 'Additions':[additions], 'Removals':[removals], 'Updated Toppings': [updated_toppings]}) #Adds order details to customer_orders dictionary to print out at checkout
+                                                else:
+                                                    customer_order['Burgers'].append({'Burger': {selected_burger}, 'Quantity':{choice},'Price': {details['Price']}, 'Additions':[additions], 'Removals':[removals]}) #Adds order details to customer_orders dictionary to print out at checkout 
                                                 break
+                                                
                                             else:
                                                 print("Enter a valid input")
                                         except ValueError:
@@ -126,7 +132,7 @@ def burgers(): #Burger Menu
                                     choice = int(input('How many would you like to order? '))
                                     if choice > 0:
                                         print(f"{choice} {selected_burger} added to order")
-                                        customer_order['Burgers'].update({'Burger': {selected_burger}, 'Quantity':{choice},'Price': {details['Price']}, 'Additions':'', 'Removals':''}) #Adds order details to customer_orders dictionary to print out at checkout
+                                        customer_order['Burgers'].append({'Burger': {selected_burger}, 'Quantity':{choice},'Price': {details['Price']}, 'Additions':'', 'Removals':''}) #Adds order details to customer_orders dictionary to print out at checkout
                                         break
                                     else:
                                         print("Enter a valid input")
@@ -139,13 +145,13 @@ def burgers(): #Burger Menu
             else: #User's integer input is not within range of number of burgers
                 print("Invalid Choice")
         except ValueError:  #If user's input is not an integer
-            choice = choice.lower()
-            if choice == 'r': #Return to main menu
+            selection = str(selection)
+            selection = selection.lower()
+            if selection == 'r': #Return to main menu
                 order()
-            elif choice == 'c':#Proceed to checkout
+            elif selection == 'c':#Proceed to checkout
                 checkout()
             else:
-                print(choice)
                 print("Invalid Choice") #Any other choice is invalid
 def sides(): #Sides Menu
     print('sides')
@@ -154,14 +160,17 @@ def drinks(): #Drinks Menu
     print('drinks')
 
 def checkout(): #Checkout
-    if customer_order['Burgers'] != '': #Checks if no burgers were ordered
+    print(customer_order)
+    if len(customer_order['Burgers']) != 0: #Checks if no burgers were ordered
         print('Burgers')
-        for menu, order in customer_order['Burgers'].items():
+        i = 0
+        for i, menu, order in customer_order['Burgers'][i].items():
             if menu == 'Price':
                 print(f"Price: ${order}") #Different print to add dollar sign 
             else:
                 print(menu, order)
-    quit() #Ends program
+            i+=1   
+    sys.exit() #Ends program
 
 
 order() #Calls function to begin program
