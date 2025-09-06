@@ -86,11 +86,16 @@ def burgers(): #Burger Menu
                             while True:
                                 choice = input('1. Add an item\n 2. Remove an item\n 3. Continue ')
                                 if choice == '1':
+                                    print(f"Current toppings on your {selected_burger}:")
+                                    print(', '.join(updated_toppings))
                                     print('Available items:')
                                     print(', '.join(burger_toppings)) #Prints toppings that can be added to a burger
                                     choice = input('Select an item from the list to add to your burger, or press enter to return to the changes menu: ').title()
                                     if choice in burger_toppings: 
-                                        additions.append(choice) #Adds item to additions list
+                                        if choice in removals: #item was previously removed from burger
+                                            removals.remove(choice) #removes item from removals list
+                                        else:
+                                            additions.append(choice) #Adds item to additions list
                                         updated_toppings.append(choice) #Adds item to the list of items on the customers current burger order
                                         print(f"{choice} added to burger") 
                                 elif choice == '2':
@@ -102,7 +107,10 @@ def burgers(): #Burger Menu
                                     #Make code only print out current toppings on burger
                                     choice = input('Select an item to remove from the burger, or press enter to return to the changes menu:').title()
                                     if choice in updated_toppings:
-                                        removals.append(choice) #Adds toppings to removals list
+                                        if choice in additions: #Item was previously added to burger
+                                            additions.remove(choice) 
+                                        else:
+                                            removals.append(choice) #Adds toppings to removals list
                                         updated_toppings.remove(choice) #Remove topping from customers current burger order
                                         print(f"{choice} removed from burger")
                                     elif choice != '':
@@ -114,11 +122,27 @@ def burgers(): #Burger Menu
                                             if choice > 0:
                                                 print(f"{choice} {selected_burger} added to order") 
                                                 if updated_toppings != details['Toppings']:
-                                                    customer_order['Burgers'].append({'Item': selected_burger, 'Quantity':choice,'Price': details['Price'], 'Additions':additions, 'Removals':removals, 'Updated Toppings': updated_toppings}) #Adds order details to customer_orders dictionary to print out at checkout
+                                                    burger_added = 'n'
+                                                    for i in customer_order['Burgers']:
+                                                        if i['Item'] == selected_burger and i['Additions'] == additions and i['Removals'] == removals and i['Updated Toppings'] == updated_toppings: #If burger with same changes is already in order
+                                                            i['Quantity'] += choice #Increaes quantity rather than creating a new item in list so it is only printed out once at checkout
+                                                            burger_added = 'y' #sets to y so burger is not added again below
+                                                            break
+                                                    if burger_added == 'n': #only adds if burger was not added in loop above
+                                                            customer_order['Burgers'].append({'Item': selected_burger, 'Quantity':choice,'Price': details['Price'], 'Additions':additions, 'Removals':removals, 'Updated Toppings':updated_toppings}) #Adds order details to customer_orders dictionary to print out at checkout
+                                                            break
+                                                    break
                                                 else:
-                                                    customer_order['Burgers'].append({'Item': selected_burger, 'Quantity':choice,'Price': details['Price'], 'Additions':additions, 'Removals':removals}) #Adds order details to customer_orders dictionary to print out at checkout 
-                                                break
-                                                
+                                                    burger_added = 'n' 
+                                                    for i in customer_order['Burgers']:
+                                                        if i['Item'] == selected_burger and i['Additions'] == additions and i['Removals'] == removals: #If burger with same changes is already in order
+                                                            i['Quantity'] += choice #Increaes quantity rather than creating a new item in list so it is only printed out once at checkout
+                                                            burger_added = 'y' #sets to y so burger is not added again below
+                                                            break
+                                                    if burger_added == 'n': #only adds if burger was not added in loop above
+                                                            customer_order['Burgers'].append({'Item': selected_burger, 'Quantity':choice,'Price': details['Price'], 'Additions':additions, 'Removals':removals}) #Adds order details to customer_orders dictionary to print out at checkout
+                                                            break
+                                                    break
                                             else:
                                                 print("Enter a valid input")
                                         except ValueError:
@@ -132,7 +156,15 @@ def burgers(): #Burger Menu
                                     choice = int(input('How many would you like to order? '))
                                     if choice > 0:
                                         print(f"{choice} {selected_burger} added to order")
-                                        customer_order['Burgers'].append({'Item': selected_burger, 'Quantity':choice,'Price': details['Price'], 'Additions':'', 'Removals':''}) #Adds order details to customer_orders dictionary to print out at checkout
+                                        burger_added = 'n' 
+                                        for i in customer_order['Burgers']:
+                                            if i['Item'] == selected_burger and i['Additions'] == '' and i['Removals'] == '': #If burger with same changes is already in order
+                                                i['Quantity'] += choice #Increaes quantity rather than creating a new item in list so it is only printed out once at checkout
+                                                burger_added = 'y' #sets to y so burger is not added again below
+                                                break
+                                        if burger_added == 'n': #only adds if burger was not added in loop above
+                                            customer_order['Burgers'].append({'Item': selected_burger, 'Quantity':choice,'Price': details['Price'], 'Additions':'', 'Removals':''}) #Adds order details to customer_orders dictionary to print out at checkout
+                                            break
                                         break
                                     else:
                                         print("Enter a valid input")
