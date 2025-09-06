@@ -129,7 +129,7 @@ def burgers(): #Burger Menu
                                                             burger_added = 'y' #sets to y so burger is not added again below
                                                             break
                                                     if burger_added == 'n': #only adds if burger was not added in loop above
-                                                            customer_order['Burgers'].append({'Item': selected_burger, 'Quantity':choice,'Price': details['Price'], 'Additions':additions, 'Removals':removals, 'Updated Toppings':updated_toppings}) #Adds order details to customer_orders dictionary to print out at checkout
+                                                            customer_order['Burgers'].append({'Item': selected_burger,'Price': details['Price'],'Quantity':choice, 'Additions':additions, 'Removals':removals, 'Updated Toppings':updated_toppings}) #Adds order details to customer_orders dictionary to print out at checkout
                                                             break
                                                     break
                                                 else:
@@ -140,7 +140,7 @@ def burgers(): #Burger Menu
                                                             burger_added = 'y' #sets to y so burger is not added again below
                                                             break
                                                     if burger_added == 'n': #only adds if burger was not added in loop above
-                                                            customer_order['Burgers'].append({'Item': selected_burger, 'Quantity':choice,'Price': details['Price'], 'Additions':additions, 'Removals':removals}) #Adds order details to customer_orders dictionary to print out at checkout
+                                                            customer_order['Burgers'].append({'Item': selected_burger, 'Price': details['Price'],'Quantity':choice, 'Additions':additions, 'Removals':removals}) #Adds order details to customer_orders dictionary to print out at checkout
                                                             break
                                                     break
                                             else:
@@ -163,7 +163,7 @@ def burgers(): #Burger Menu
                                                 burger_added = 'y' #sets to y so burger is not added again below
                                                 break
                                         if burger_added == 'n': #only adds if burger was not added in loop above
-                                            customer_order['Burgers'].append({'Item': selected_burger, 'Quantity':choice,'Price': details['Price'], 'Additions':'', 'Removals':''}) #Adds order details to customer_orders dictionary to print out at checkout
+                                            customer_order['Burgers'].append({'Item': selected_burger,'Price': details['Price'],'Quantity':choice, 'Additions':'', 'Removals':''}) #Adds order details to customer_orders dictionary to print out at checkout
                                             break
                                         break
                                     else:
@@ -193,17 +193,21 @@ def drinks(): #Drinks Menu
 
 def checkout(): #Checkout
     print(customer_order)
+    total_cost = []
     if len(customer_order['Burgers']) != 0: #Checks if no burgers were ordered
         print('Burgers')
         for burger in customer_order['Burgers']:
+            total_cost.append(burger['Price']*burger['Quantity'])
             for key, value in burger.items():
-                if key == 'Additions' or key == 'Removals':
+                if key == 'Additions' or key == 'Removals' or key == 'Updated Toppings':
                     if len(value) > 0:
-                        print(f'{key}: {value}')
+                        print(f'{key}: {', '.join(value)}')
                 elif key == 'Price':
                     print(f"Price: ${value}") #Different print to add dollar sign 
                 else:
                     print(f'{key}: {value}')
+    print(f'Total cost: ${sum(total_cost):.2f}')
+    print('Thank you for your order!')
     sys.exit() #Ends program
 
 
