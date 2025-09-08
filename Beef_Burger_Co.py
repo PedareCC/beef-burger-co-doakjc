@@ -6,12 +6,16 @@ menu = {'Burgers': { #Burger Menu Dictionary
     'Price': 8.99, #Key:Value pair for price
     'Toppings': ['Beef Patty', 'Cheese', 'Pickles', 'Onion', 'Ketchup', 'Mustard'] #Key:Value Pair with list for toppings 
     },
+    'Double Cheeseburger': { 
+    'Price': 10.49,
+    'Toppings': ['Beef Patty', 'Cheese', 'Beef Patty', 'Cheese', 'Pickles', 'Onion', 'Ketchup', 'Mustard']
+    },
     'Beef Burger': {
-        'Price': 9.95,
+        'Price': 9.99,
         'Toppings': ['Beef Patty', 'Cheese', 'Tomato', 'Lettuce', 'Pickles', 'Ketchup', 'Mustard']
     },
      'Bacon Burger': {
-        'Price': 9.95,
+        'Price': 9.99,
         'Toppings': ['Beef Patty', 'Cheese', 'Bacon', 'Onion Rings', 'Barbecue Sauce']
     }
     },
