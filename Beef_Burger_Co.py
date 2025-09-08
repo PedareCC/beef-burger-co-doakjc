@@ -105,7 +105,7 @@ def burgers(): #Burger Menu
                                         print(f"Current toppings on your {selected_burger}:")
                                         print(', '.join(updated_toppings)) #Prints toppings on burger
                                     #Make code only print out current toppings on burger
-                                    choice = input('Select an item to remove from the burger, or press enter to return to the changes menu:').title()
+                                    choice = input('Select an item to remove from the burger, or press enter to return to the changes menu: ').title()
                                     if choice in updated_toppings:
                                         if choice in additions: #Item was previously added to burger
                                             additions.remove(choice) 
@@ -163,7 +163,7 @@ def burgers(): #Burger Menu
                                                 burger_added = 'y' #sets to y so burger is not added again below
                                                 break
                                         if burger_added == 'n': #only adds if burger was not added in loop above
-                                            customer_order['Burgers'].append({'Item': selected_burger,'Price': details['Price'],'Quantity':choice, 'Additions':'', 'Removals':''}) #Adds order details to customer_orders dictionary to print out at checkout
+                                            customer_order['Burgers'].append({'Item': selected_burger,'Price': details['Price'],'Quantity':choice, 'Additions':[], 'Removals':[]}) #Adds order details to customer_orders dictionary to print out at checkout
                                             break
                                         break
                                     else:
@@ -193,10 +193,12 @@ def drinks(): #Drinks Menu
 
 def checkout(): #Checkout
     print(customer_order)
+    print('Customer Order \n-----')
     total_cost = []
     if len(customer_order['Burgers']) != 0: #Checks if no burgers were ordered
         print('Burgers')
         for burger in customer_order['Burgers']:
+            print('-----')
             total_cost.append(burger['Price']*burger['Quantity'])
             for key, value in burger.items():
                 if key == 'Additions' or key == 'Removals' or key == 'Updated Toppings':
