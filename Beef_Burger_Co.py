@@ -239,22 +239,19 @@ def sides(): #Sides Menu
                                         print(f"{choice} added to side") 
                                 elif choice == '2':
                                   if updated_toppings != []:
-                                    print(f"{selected_side} toppings:")
-                                    print(', '.join(details['Toppings'])) #Prints toppings on side
-                                    if details['Toppings'] != updated_toppings:
                                         print(f"Current toppings on your {selected_side}:")
                                         print(', '.join(updated_toppings)) #Prints toppings on side
                                     #Make code only print out current toppings on side
-                                    choice = input('Select an item to remove from the side, or press enter to return to the changes menu: ').title()
-                                    if choice in updated_toppings:
-                                        if choice in additions: #Item was previously added to side
-                                            additions.remove(choice) 
-                                        else:
-                                            removals.append(choice) #Adds toppings to removals list
-                                        updated_toppings.remove(choice) #Remove topping from customers current side order
-                                        print(f"{choice} removed from side")
-                                    elif choice != '':
-                                        print('This item is not on the side')
+                                        choice = input('Select an item to remove from the side, or press enter to return to the changes menu: ').title()
+                                        if choice in updated_toppings:
+                                            if choice in additions: #Item was previously added to side
+                                                additions.remove(choice) 
+                                            else:
+                                                removals.append(choice) #Adds toppings to removals list
+                                            updated_toppings.remove(choice) #Remove topping from customers current side order
+                                            print(f"{choice} removed from side")
+                                        elif choice != '':
+                                            print('This item is not on the side')
                                   else:
                                     print("There are no toppings on this item to remove")
                                 elif choice == '3':
@@ -263,7 +260,7 @@ def sides(): #Sides Menu
                                             choice = int(input('How many would you like to order? '))
                                             if choice > 0:
                                                 print(f"{choice} {selected_side} added to order") 
-                                                if updated_toppings != details['Toppings']:
+                                                if updated_toppings != []:
                                                     side_added = 'n'
                                                     for i in customer_order['Sides']:
                                                         if i['Item'] == selected_side and i['Additions'] == additions and i['Removals'] == removals and i['Updated Toppings'] == updated_toppings: #If side with same changes is already in order
@@ -271,7 +268,7 @@ def sides(): #Sides Menu
                                                             side_added = 'y' #sets to y so side is not added again below
                                                             break
                                                     if side_added == 'n': #only adds if side was not added in loop above
-                                                            customer_order['Sides'].append({'Item': selected_side,'Price': details['Price'],'Quantity':choice, 'Additions':additions, 'Removals':removals, 'Updated Toppings':updated_toppings}) #Adds order details to customer_orders dictionary to print out at checkout
+                                                            customer_order['Sides'].append({'Item': selected_side,'Price': details['Price'],'Quantity':choice, 'Additions':additions, 'Removals':removals}) #Adds order details to customer_orders dictionary to print out at checkout
                                                             break
                                                     break
                                                 else:
@@ -333,8 +330,8 @@ def drinks(): #Drinks Menu
     print('drinks')
 
 def checkout(): #Checkout
-    print(customer_order)
-    print('Customer Order \n-----')
+    print('-----')
+    print('Customer Order: \n-----')
     total_cost = []
     if len(customer_order['Burgers']) != 0: #Checks if no burgers were ordered
         print('Burgers')
@@ -349,6 +346,7 @@ def checkout(): #Checkout
                     print(f"Price: ${value}") #Different print to add dollar sign 
                 else:
                     print(f'{key}: {value}')
+        print('-----')
     if len(customer_order['Sides']) != 0: #Checks if no sides were ordered
         print('Sides')
         for side in customer_order['Sides']:
@@ -362,8 +360,11 @@ def checkout(): #Checkout
                     print(f"Price: ${value}") #Different print to add dollar sign 
                 else:
                     print(f'{key}: {value}')
+        print('-----')
     print(f'Total cost: ${sum(total_cost):.2f}')
+    print('-----')
     print('Thank you for your order!')
+    print('-----')
     sys.exit() #Ends program
 
 
