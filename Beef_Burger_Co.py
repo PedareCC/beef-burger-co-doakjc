@@ -20,15 +20,26 @@ menu = {'Burgers': { #Burger Menu Dictionary
     }
     },
     'Sides': { #Sides Menu Dictionary
-        'Small Fries':{ 
+        'Small Chips':{ 
         'Price':3.49
     },
-    'Medium Fries':{ 
+    'Medium Chips':{ 
         'Price':4.49
     },
-    'Large Fries':{ 
+    'Large Chips':{ 
         'Price':5.99
-    }},
+    },
+    '6-Piece Chicken Nuggets':{
+        'Price':6.49}
+        ,
+    '12-Piece Chicken Nuggets':{
+        'Price':11.99}
+        ,
+    '3 Chicken Nuggets & Chips':{
+        'Price':6.49}
+        ,
+    'Onion Rings':{
+        'Price':6.49}},
     
     'Drinks': { #Drinks Menu Dictionary
         'Small Coke':{'Price': 3.49},
@@ -40,7 +51,8 @@ menu = {'Burgers': { #Burger Menu Dictionary
 }
 
 #Toppings that a customer can add to their burger
-burger_toppings = ['Beef Patty', 'Bacon', 'Cheese', 'Pickles', 'Onion', 'Onion Rings', 'Tomato', 'Lettuce', 'Ketchup', 'Mustard', 'Barbecue Sauce']
+burger_toppings = ['Beef Patty', 'Bacon', 'Cheese', 'Pickles', 'Onion', 'Onion Rings', 'Tomato', 'Lettuce', 'Ketchup', 'Mustard', 'Barbecue Sauce', 'Mayonnaise']
+sides_toppings = ['Ketchup', 'Barbecue Sauce', 'Mustard', 'Mayonnaise' 'Salt']
 
 #Customer order Dictionary, information gets added to this after an item is ordered, and this is then printed out at the checkout
 customer_order = {'Burgers':[], #Dictionary for Burger Orders
