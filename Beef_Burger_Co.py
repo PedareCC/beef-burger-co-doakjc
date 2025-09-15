@@ -52,7 +52,7 @@ menu = {'Burgers': { #Burger Menu Dictionary
 
 #Toppings that a customer can add to their burger
 burger_toppings = ['Beef Patty', 'Bacon', 'Cheese', 'Pickles', 'Onion', 'Onion Rings', 'Tomato', 'Lettuce', 'Ketchup', 'Mustard', 'Barbecue Sauce', 'Mayonnaise']
-side_toppings = ['Ketchup', 'Barbecue Sauce', 'Mustard', 'Mayonnaise' 'Salt']
+side_toppings = ['Ketchup', 'Barbecue Sauce', 'Mustard', 'Mayonnaise', 'Salt']
 
 #Customer order Dictionary, information gets added to this after an item is ordered, and this is then printed out at the checkout
 customer_order = {'Burgers':[], #Dictionary for Burger Orders
