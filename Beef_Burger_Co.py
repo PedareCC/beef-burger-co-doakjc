@@ -327,7 +327,55 @@ def sides(): #Sides Menu
 
 
 def drinks(): #Drinks Menu
-    print('drinks')
+    print('Drinks Menu:')
+    drink_list = list(menu['Drinks'].items()) #Creates list of keys/values in drink menu to print
+    for index, (drink, details) in enumerate(drink_list): 
+        print(f'{index+1}. {drink}: ${details['Price']}') #Prints numbered list with drink and price
+    while True:
+        selection = (input("Enter an item's number to view it, or type r to return to menu selection or c to proceed to the checkout: "))
+        try:
+            selection = int(selection)
+            if 1 <= selection <= len(drink_list): #If number within range of drinks in menu
+                selected_drink, details = drink_list[selection-1] #Accesses drink name and details from list, (choice -1 to get correct index value as list starts from 0)
+                print(f"{selected_drink}:") #Drink Name
+                print(f"  Price: ${details['Price']}") #Drink Price
+                while True:
+                    choice = input('Add drink to order? 1. Yes, 2. No ')
+                    if choice == '1':
+                        while True:
+                            try:
+                                choice = int(input('How many would you like to order? '))
+                                if choice > 0:
+                                    print(f"{choice} {selected_drink} added to order") 
+                                    drink_added = 'n'
+                                    for i in customer_order['Drinks']:
+                                        if i['Item'] == selected_drink: #If drink is already in order
+                                            i['Quantity'] += choice #Increaes quantity rather than creating a new item in list so it is only printed out once at checkout
+                                            drink_added = 'y' #sets to y so drink is not added again below
+                                            break
+                                    if drink_added == 'n': #only adds if drink was not added in loop above
+                                            customer_order['Drinks'].append({'Item': selected_drink,'Price': details['Price'],'Quantity':choice}) #Adds order details to customer_orders dictionary to print out at checkout
+                                            break
+                                    break
+                                else:
+                                    print("Enter a valid input")
+                            except ValueError:
+                                print('Enter a valid input')
+                        drinks()
+                    else:
+                         drinks()
+                    break
+            else: #User's integer input is not within range of number of drinks
+                print("Invalid Choice")
+        except ValueError:  #If user's input is not an integer
+            selection = str(selection)
+            selection = selection.lower()
+            if selection == 'r': #Return to main menu
+                order()
+            elif selection == 'c':#Proceed to checkout
+                checkout()
+            else:
+                print("Invalid Choice") #Any other choice is invalid
 
 def checkout(): #Checkout
     print('-----')
@@ -357,6 +405,17 @@ def checkout(): #Checkout
                     if len(value) > 0:
                         print(f'{key}: {', '.join(value)}')
                 elif key == 'Price':
+                    print(f"Price: ${value}") #Different print to add dollar sign 
+                else:
+                    print(f'{key}: {value}')
+        print('-----')
+    if len(customer_order['Drinks']) != 0: #Checks if no drinks were ordered
+        print('Drinks')
+        for drink in customer_order['Drinks']:
+            print('-----')
+            total_cost.append(drink['Price']*drink['Quantity'])
+            for key, value in drink.items():
+                if key == 'Price':
                     print(f"Price: ${value}") #Different print to add dollar sign 
                 else:
                     print(f'{key}: {value}')
