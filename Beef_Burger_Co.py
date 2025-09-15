@@ -92,8 +92,8 @@ def burgers(): #Burger Menu
                 print(f"  Price: ${details['Price']}") #Burger Price
                 print(f"  Toppings: {', '.join(details['Toppings'])}") #Prints toppings of burger
                 while True:
-                    choice = input('Add burger to order? y for yes, n to return to the menu ')
-                    if choice == 'y':
+                    choice = input('Add burger to order? 1. Yes, 2. No ')
+                    if choice == '1':
                         updated_toppings=list(details['Toppings']) # Allows removals to be removed from burger toppings/additions added
                         choice = input('Make any changes to order? 1. Yes, 2. No ')
                         if choice == '1':
@@ -215,8 +215,8 @@ def sides(): #Sides Menu
                 print(f"{selected_side}:") #Side Name
                 print(f"  Price: ${details['Price']}") #Side Price
                 while True:
-                    choice = input('Add side to order? y for yes, n to return to the menu ')
-                    if choice == 'y':
+                    choice = input('Add side to order? 1. Yes, 2. No ')
+                    if choice == '1':
                         updated_toppings = [] # Allows removals to be removed from side toppings/additions added
                         choice = input('Make any changes to order? 1. Yes, 2. No ')
                         if choice == '1':
