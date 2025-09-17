@@ -392,6 +392,8 @@ def checkout(): #Checkout
                         print(f'{key}: {', '.join(value)}')
                 elif key == 'Price':
                     print(f"Price: ${value}") #Different print to add dollar sign 
+                    if burger['Price']*burger['Quantity'] > 1:
+                        print(f"Total Price: ${burger['Price']*burger['Quantity']:.2f}") #Prints total price when quantity is more than 1
                 else:
                     print(f'{key}: {value}')
         print('-----')
@@ -406,6 +408,8 @@ def checkout(): #Checkout
                         print(f'{key}: {', '.join(value)}')
                 elif key == 'Price':
                     print(f"Price: ${value}") #Different print to add dollar sign 
+                    if side['Price']*side['Quantity'] > 1:
+                        print(f"Total Price: ${side['Price']*side['Quantity']:.2f}") #Prints total price when quantity is more than 1
                 else:
                     print(f'{key}: {value}')
         print('-----')
@@ -417,6 +421,8 @@ def checkout(): #Checkout
             for key, value in drink.items():
                 if key == 'Price':
                     print(f"Price: ${value}") #Different print to add dollar sign 
+                    if drink['Price']*drink['Quantity'] > 1:
+                        print(f"Total Price: ${drink['Price']*drink['Quantity']:.2f}") #Prints total price when quantity is more than 1
                 else:
                     print(f'{key}: {value}')
         print('-----')
