@@ -43,7 +43,7 @@ menu = {'Burgers': { #Burger Menu Dictionary
     
     'Drinks': { #Drinks Menu Dictionary
         'Small Coke':{'Price': 3.49},
-        'Large Coke':{'Price':4.99},
+        'Large Coke':{'Price': 4.99},
         'Small Sprite':{'Price': 3.49},
         'Large Sprite':{'Price':4.99},
         'Small Fanta':{'Price': 3.49},
@@ -51,7 +51,7 @@ menu = {'Burgers': { #Burger Menu Dictionary
 }
 
 #Toppings that a customer can add to their burger
-burger_toppings = ['Beef Patty', 'Bacon', 'Cheese', 'Pickles', 'Onion', 'Onion Rings', 'Tomato', 'Lettuce', 'Ketchup', 'Mustard', 'Barbecue Sauce', 'Mayonnaise']
+burger_toppings = {'Beef Patty':2.00, 'Bacon':1.00, 'Cheese':0.50, 'Pickles':0.50, 'Onion':0.25, 'Onion Rings':0.50, 'Tomato':0.25, 'Lettuce':0.25, 'Ketchup':0.50, 'Mustard':0.50, 'Barbecue Sauce':0.50, 'Mayonnaise':0.50}
 side_toppings = ['Ketchup', 'Barbecue Sauce', 'Mustard', 'Mayonnaise', 'Salt']
 
 #Customer order Dictionary, information gets added to this after an item is ordered, and this is then printed out at the checkout
@@ -105,7 +105,11 @@ def burgers(): #Burger Menu
                                     print(f"Current toppings on your {selected_burger}:")
                                     print(', '.join(updated_toppings))
                                     print('Available items:')
-                                    print(', '.join(burger_toppings)) #Prints toppings that can be added to a burger
+                                    for topping, price in burger_toppings.items(): #Prints toppings that can be added to a burger with prices
+                                        if topping == list(burger_toppings.keys())[-1]: #If last item in dictionary
+                                            print(f"{topping}: ${price:.2f}") #Prints without comma at end
+                                        else:
+                                            print(f"{topping}: ${price:.2f}", end=', ')
                                     choice = input('Select an item from the list to add to your burger, or press enter to return to the changes menu: ').title()
                                     if choice in burger_toppings: 
                                         if choice in removals: #item was previously removed from burger
@@ -390,10 +394,19 @@ def checkout(): #Checkout
                 if key == 'Additions' or key == 'Removals' or key == 'Updated Toppings':
                     if len(value) > 0:
                         print(f'{key}: {', '.join(value)}')
+                        if key == 'Additions':
+                            additional_cost = []
+                            for addition in value:
+                                total_cost.append(burger_toppings[addition]*burger['Quantity']) #Adds cost of additions to total cost, multiplied by quantity of burgers ordered
+                                additional_cost.append(burger_toppings[addition]) 
+                            print(f"+ ${sum(additional_cost):.2f}")
                 elif key == 'Price':
-                    print(f"Price: ${value}") #Different print to add dollar sign 
-                    if burger['Price']*burger['Quantity'] > 1:
-                        print(f"Total Price: ${burger['Price']*burger['Quantity']:.2f}") #Prints total price when quantity is more than 1
+                    additional_cost = []
+                    for addition in burger['Additions']:
+                        additional_cost.append(burger_toppings[addition])
+                    print(f"Price: ${value+sum(additional_cost):.2f}") #Different print to add dollar sign 
+                    if burger['Quantity'] > 1:
+                        print(f"Total Price: ${(burger['Price']+sum(additional_cost))*burger['Quantity']:.2f}") #Prints total price when quantity is more than 1
                 else:
                     print(f'{key}: {value}')
         print('-----')
