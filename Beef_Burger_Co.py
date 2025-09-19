@@ -52,7 +52,7 @@ menu = {'Burgers': { #Burger Menu Dictionary
 
 #Toppings that a customer can add to their burger
 burger_toppings = {'Beef Patty':2.00, 'Bacon':1.00, 'Cheese':0.50, 'Pickles':0.50, 'Onion':0.25, 'Onion Rings':0.50, 'Tomato':0.25, 'Lettuce':0.25, 'Ketchup':0.50, 'Mustard':0.50, 'Barbecue Sauce':0.50, 'Mayonnaise':0.50}
-side_toppings = ['Ketchup', 'Barbecue Sauce', 'Mustard', 'Mayonnaise', 'Salt']
+side_toppings = {'Ketchup':0.50, 'Barbecue Sauce':0.50, 'Mustard':0.50, 'Mayonnaise':0.50, 'Salt':0.10}
 
 #Customer order Dictionary, information gets added to this after an item is ordered, and this is then printed out at the checkout
 customer_order = {'Burgers':[], #Dictionary for Burger Orders
@@ -232,7 +232,11 @@ def sides(): #Sides Menu
                                     print(f"Current toppings on your {selected_side}:")
                                     print(', '.join(updated_toppings))
                                     print('Available items:')
-                                    print(', '.join(side_toppings)) #Prints toppings that can be added to a side
+                                    for topping, price in side_toppings.items(): #Prints toppings that can be added to a side with prices
+                                        if topping == list(side_toppings.keys())[-1]: #If last item in dictionary
+                                            print(f"{topping}: ${price:.2f}") #Prints without comma at end
+                                        else:
+                                            print(f"{topping}: ${price:.2f}", end=', ') #Prints toppings that can be added to a side
                                     choice = input('Select an item from the list to add to your side, or press enter to return to the changes menu: ').title()
                                     if choice in side_toppings: 
                                         if choice in removals: #item was previously removed from side
@@ -400,13 +404,13 @@ def checkout(): #Checkout
                                 total_cost.append(burger_toppings[addition]*burger['Quantity']) #Adds cost of additions to total cost, multiplied by quantity of burgers ordered
                                 additional_cost.append(burger_toppings[addition]) 
                             print(f"+ ${sum(additional_cost):.2f}")
+                            if burger['Quantity'] > 1 or len(burger['Additions']) > 0:
+                                print(f"Total Price: ${(burger['Price']+sum(additional_cost))*burger['Quantity']:.2f}") #Prints total price when quantity is more than 1
                 elif key == 'Price':
                     additional_cost = []
                     for addition in burger['Additions']:
                         additional_cost.append(burger_toppings[addition])
-                    print(f"Price: ${value+sum(additional_cost):.2f}") #Different print to add dollar sign 
-                    if burger['Quantity'] > 1:
-                        print(f"Total Price: ${(burger['Price']+sum(additional_cost))*burger['Quantity']:.2f}") #Prints total price when quantity is more than 1
+                    print(f"Price: ${value:.2f}") #Different print to add dollar sign 
                 else:
                     print(f'{key}: {value}')
         print('-----')
@@ -419,10 +423,19 @@ def checkout(): #Checkout
                 if key == 'Additions' or key == 'Removals' or key == 'Updated Toppings':
                     if len(value) > 0:
                         print(f'{key}: {', '.join(value)}')
+                        if key == 'Additions':
+                            additional_cost = []
+                            for addition in value:
+                                total_cost.append(side_toppings[addition]*side['Quantity']) #Adds cost of additions to total cost, multiplied by quantity of sides ordered
+                                additional_cost.append(side_toppings[addition]) 
+                            print(f"+ ${sum(additional_cost):.2f}")
+                            if side['Quantity'] > 1 or len(side['Additions']) > 0:
+                                print(f"Total Price: ${(side['Price']+sum(additional_cost))*side['Quantity']:.2f}") #Prints total price when quantity is more than 1, or when additions have been made
                 elif key == 'Price':
-                    print(f"Price: ${value}") #Different print to add dollar sign 
-                    if side['Price']*side['Quantity'] > 1:
-                        print(f"Total Price: ${side['Price']*side['Quantity']:.2f}") #Prints total price when quantity is more than 1
+                    additional_cost = []
+                    for addition in side['Additions']:
+                        additional_cost.append(side_toppings[addition])
+                    print(f"Price: ${value:.2f}") #Different print to add dollar sign 
                 else:
                     print(f'{key}: {value}')
         print('-----')
