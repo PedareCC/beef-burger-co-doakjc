@@ -149,7 +149,7 @@ def burgers(): #Burger Menu
                                                             burger_added = 'y' #sets to y so burger is not added again below
                                                             break
                                                     if burger_added == 'n': #only adds if burger was not added in loop above
-                                                            customer_order['Burgers'].append({'Item': selected_burger,'Price': details['Price'],'Quantity':choice, 'Additions':additions, 'Removals':removals, 'Updated Toppings':updated_toppings}) #Adds order details to customer_orders dictionary to print out at checkout
+                                                            customer_order['Burgers'].append({'Item': selected_burger,'Price': details['Price'], 'Additions':additions, 'Removals':removals, 'Updated Toppings':updated_toppings,'Quantity':choice}) #Adds order details to customer_orders dictionary to print out at checkout
                                                             break
                                                     break
                                                 else:
@@ -160,7 +160,7 @@ def burgers(): #Burger Menu
                                                             burger_added = 'y' #sets to y so burger is not added again below
                                                             break
                                                     if burger_added == 'n': #only adds if burger was not added in loop above
-                                                            customer_order['Burgers'].append({'Item': selected_burger, 'Price': details['Price'],'Quantity':choice, 'Additions':additions, 'Removals':removals}) #Adds order details to customer_orders dictionary to print out at checkout
+                                                            customer_order['Burgers'].append({'Item': selected_burger, 'Price': details['Price'], 'Additions':additions, 'Removals':removals,'Quantity':choice}) #Adds order details to customer_orders dictionary to print out at checkout
                                                             break
                                                     break
                                             else:
@@ -183,7 +183,7 @@ def burgers(): #Burger Menu
                                                 burger_added = 'y' #sets to y so burger is not added again below
                                                 break
                                         if burger_added == 'n': #only adds if burger was not added in loop above
-                                            customer_order['Burgers'].append({'Item': selected_burger,'Price': details['Price'],'Quantity':choice, 'Additions':[], 'Removals':[]}) #Adds order details to customer_orders dictionary to print out at checkout
+                                            customer_order['Burgers'].append({'Item': selected_burger,'Price': details['Price'], 'Additions':[], 'Removals':[],'Quantity':choice}) #Adds order details to customer_orders dictionary to print out at checkout
                                             break
                                         break
                                     else:
@@ -229,8 +229,9 @@ def sides(): #Sides Menu
                             while True:
                                 choice = input('1. Add an item\n 2. Remove an item\n 3. Continue ')
                                 if choice == '1':
-                                    print(f"Current toppings on your {selected_side}:")
-                                    print(', '.join(updated_toppings))
+                                    if updated_toppings != []:
+                                        print(f"Current toppings on your {selected_side}:")
+                                        print(', '.join(updated_toppings))
                                     print('Available items:')
                                     for topping, price in side_toppings.items(): #Prints toppings that can be added to a side with prices
                                         if topping == list(side_toppings.keys())[-1]: #If last item in dictionary
@@ -276,7 +277,7 @@ def sides(): #Sides Menu
                                                             side_added = 'y' #sets to y so side is not added again below
                                                             break
                                                     if side_added == 'n': #only adds if side was not added in loop above
-                                                            customer_order['Sides'].append({'Item': selected_side,'Price': details['Price'],'Quantity':choice, 'Additions':additions, 'Removals':removals}) #Adds order details to customer_orders dictionary to print out at checkout
+                                                            customer_order['Sides'].append({'Item': selected_side,'Price': details['Price'], 'Additions':additions, 'Removals':removals,'Quantity':choice}) #Adds order details to customer_orders dictionary to print out at checkout
                                                             break
                                                     break
                                                 else:
@@ -287,7 +288,7 @@ def sides(): #Sides Menu
                                                             side_added = 'y' #sets to y so side is not added again below
                                                             break
                                                     if side_added == 'n': #only adds if side was not added in loop above
-                                                            customer_order['Sides'].append({'Item': selected_side, 'Price': details['Price'],'Quantity':choice, 'Additions':additions, 'Removals':removals}) #Adds order details to customer_orders dictionary to print out at checkout
+                                                            customer_order['Sides'].append({'Item': selected_side, 'Price': details['Price'], 'Additions':additions, 'Removals':removals,'Quantity':choice}) #Adds order details to customer_orders dictionary to print out at checkout
                                                             break
                                                     break
                                             else:
@@ -310,7 +311,7 @@ def sides(): #Sides Menu
                                                 side_added = 'y' #sets to y so side is not added again below
                                                 break
                                         if side_added == 'n': #only adds if side was not added in loop above
-                                            customer_order['Sides'].append({'Item': selected_side,'Price': details['Price'],'Quantity':choice, 'Additions':[], 'Removals':[]}) #Adds order details to customer_orders dictionary to print out at checkout
+                                            customer_order['Sides'].append({'Item': selected_side,'Price': details['Price'],'Additions':[], 'Removals':[],'Quantity':choice}) #Adds order details to customer_orders dictionary to print out at checkout
                                             break
                                         break
                                     else:
@@ -403,9 +404,14 @@ def checkout(): #Checkout
                             for addition in value:
                                 total_cost.append(burger_toppings[addition]*burger['Quantity']) #Adds cost of additions to total cost, multiplied by quantity of burgers ordered
                                 additional_cost.append(burger_toppings[addition]) 
-                            print(f"+ ${sum(additional_cost):.2f}")
-                            if burger['Quantity'] > 1 or len(burger['Additions']) > 0:
-                                print(f"Total Price: ${(burger['Price']+sum(additional_cost))*burger['Quantity']:.2f}") #Prints total price when quantity is more than 1
+                            print(f"+ ${sum(additional_cost):.2f} ")
+                elif key == 'Quantity':
+                        print(f'Quantity: {value}')
+                        additional_cost = []
+                        for addition in burger['Additions']:
+                            additional_cost.append(burger_toppings[addition])
+                        if burger['Quantity'] > 1 or len(burger['Additions']) > 0:
+                            print(f"Total Price: ${(burger['Price']+sum(additional_cost))*burger['Quantity']:.2f}") #Prints total price when quantity is more than 1, or when additions have been made
                 elif key == 'Price':
                     additional_cost = []
                     for addition in burger['Additions']:
@@ -429,13 +435,18 @@ def checkout(): #Checkout
                                 total_cost.append(side_toppings[addition]*side['Quantity']) #Adds cost of additions to total cost, multiplied by quantity of sides ordered
                                 additional_cost.append(side_toppings[addition]) 
                             print(f"+ ${sum(additional_cost):.2f}")
-                            if side['Quantity'] > 1 or len(side['Additions']) > 0:
-                                print(f"Total Price: ${(side['Price']+sum(additional_cost))*side['Quantity']:.2f}") #Prints total price when quantity is more than 1, or when additions have been made
+                elif key == 'Quantity':
+                        print(f'Quantity: {value}')
+                        additional_cost = []
+                        for addition in side['Additions']:
+                            additional_cost.append(side_toppings[addition])
+                        if side['Quantity'] > 1 or len(side['Additions']) > 0:
+                            print(f"Total Price: ${(side['Price']+sum(additional_cost))*side['Quantity']:.2f}") #Prints total price when quantity is more than 1, or when additions have been made
                 elif key == 'Price':
                     additional_cost = []
                     for addition in side['Additions']:
                         additional_cost.append(side_toppings[addition])
-                    print(f"Price: ${value:.2f}") #Different print to add dollar sign 
+                    print(f"Price: ${value:.2f}") #Different print to add dollar sign
                 else:
                     print(f'{key}: {value}')
         print('-----')
@@ -447,12 +458,15 @@ def checkout(): #Checkout
             for key, value in drink.items():
                 if key == 'Price':
                     print(f"Price: ${value}") #Different print to add dollar sign 
-                    if drink['Price']*drink['Quantity'] > 1:
-                        print(f"Total Price: ${drink['Price']*drink['Quantity']:.2f}") #Prints total price when quantity is more than 1
+                elif key == 'Quantity':
+                        print(f'Quantity: {value}')
+                        if drink['Price']*drink['Quantity'] > 1:
+                            print(f"Total Price: ${drink['Price']*drink['Quantity']:.2f}") #Prints total price when quantity is more than 1
+
                 else:
                     print(f'{key}: {value}')
         print('-----')
-    print(f'Total cost: ${sum(total_cost):.2f}')
+    print(f'Total Order Cost: ${sum(total_cost):.2f}')
     print('-----')
     print('Thank you for your order!')
     print('-----')
