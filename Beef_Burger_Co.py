@@ -178,7 +178,7 @@ def burgers(): #Burger Menu
                                         print(f"{choice} {selected_burger} added to order")
                                         burger_added = 'n' 
                                         for i in customer_order['Burgers']:
-                                            if i['Item'] == selected_burger and i['Additions'] == '' and i['Removals'] == '': #If burger with same changes is already in order
+                                            if i['Item'] == selected_burger and i['Additions'] == [] and i['Removals'] == []: #If burger with same changes is already in order
                                                 i['Quantity'] += choice #Increaes quantity rather than creating a new item in list so it is only printed out once at checkout
                                                 burger_added = 'y' #sets to y so burger is not added again below
                                                 break
@@ -306,7 +306,7 @@ def sides(): #Sides Menu
                                         print(f"{choice} {selected_side} added to order")
                                         side_added = 'n' 
                                         for i in customer_order['Sides']:
-                                            if i['Item'] == selected_side and i['Additions'] == '' and i['Removals'] == '': #If side with same changes is already in order
+                                            if i['Item'] == selected_side and i['Additions'] == [] and i['Removals'] == []: #If side with same changes is already in order
                                                 i['Quantity'] += choice #Increaes quantity rather than creating a new item in list so it is only printed out once at checkout
                                                 side_added = 'y' #sets to y so side is not added again below
                                                 break
